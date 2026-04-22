@@ -7,14 +7,13 @@ jobs:
     timeout-minutes: 360
 
     steps:
-    - name: Ngrok ve Araclari Indir
+    - name: Ngrok Kurulumu (Resmi Paket Yoneticisi)
       run: |
-        # Ngrok'un kendi resmi sitesinden en guncel surumu indiriyoruz (404 hatasi vermez)
-        Invoke-WebRequest https://bin.equinox.io/c/b32797e87ab/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
-        Expand-Archive ngrok.zip
+        # Choco kullanarak ngrok'u hatasiz ve en guncel haliyle kuruyoruz
+        choco install ngrok
         
     - name: Ngrok Auth Token Bagla
-      run: .\ngrok.exe authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
+      run: ngrok authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
 
     - name: RDP Erisimini Aktif Et
       run: |
@@ -23,18 +22,17 @@ jobs:
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
 
     - name: Ngrok Tunelini Baslat
-      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok.exe tcp 3389"'
+      run: Start-Process Powershell -ArgumentList '-Noexit -Command "ngrok tcp 3389"'
 
     - name: Baglanti Bilgilerini Ekrana Yazdir
       run: |
-        Write-Host "RDP Hazirlaniyor... Lutfen 10 saniye bekleyin."
-        Start-Sleep -s 10
+        Write-Host "RDP Hazirlaniyor... Lutfen 20 saniye bekleyin."
+        Start-Sleep -s 20
         $tunnels = iwr -Uri http://127.0.0.1:4040/api/tunnels | ConvertFrom-Json
         $public_url = $tunnels.tunnels.public_url
         Write-Host "----------------------------------------------------"
         Write-Host "BAGLANTI ADRESI: $public_url"
         Write-Host "KULLANICI ADI: runneradmin"
-        Write-Host "SIFRE: (Sistem tarafindan otomatik belirlenir)"
         Write-Host "----------------------------------------------------"
 
     - name: Sistemi Acik Tut (6 Saat)
