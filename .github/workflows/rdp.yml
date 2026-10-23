@@ -33,7 +33,7 @@ jobs:
         Write-Host "----------------------------------------------------"
         Write-Host "BAGLANTI ADRESI: $public_url"
         Write-Host "KULLANICI ADI: sercan"
-        Write-Host "SIFRE: 1987seco!"
+        Write-Host "SIFRE: 1987seco"
         Write-Host "----------------------------------------------------"
 
     - name: Sistemi Acik Tut (6 Saat)
