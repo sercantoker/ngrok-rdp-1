@@ -32,8 +32,8 @@ jobs:
         $public_url = $tunnels.tunnels.public_url
         Write-Host "----------------------------------------------------"
         Write-Host "BAGLANTI ADRESI: $public_url"
-        Write-Host "KULLANICI ADI: runneradmin"
-        Write-Host "SIFRE: Sercan123!"
+        Write-Host "KULLANICI ADI: sercan"
+        Write-Host "SIFRE: 1987seco!"
         Write-Host "----------------------------------------------------"
 
     - name: Sistemi Acik Tut (6 Saat)
